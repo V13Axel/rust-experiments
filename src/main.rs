@@ -1,38 +1,50 @@
 use std::cell::RefCell;
 
-struct Minion<Type: MinionType> {
-    minion_type: Type,
-    task: String,
-}
-
-trait MinionType {
-    fn run_actual(&self);
-}
-
-impl<T: MinionType> Minion<T> {
-    fn run(&self) {
-        println!("Performing task {}", self.task);
-        self.minion_type.run_actual();
-    }
-}
-
-struct Harvester;
-
-impl MinionType for Harvester {
-    fn run_actual(&self) {
-        println!("Harvesting");
-    }
-}
-
-struct Builder;
-
-impl MinionType for Builder {
-    fn run_actual(&self) {
-        println!("Building");
-    }
-}
 
 fn main() {
+}
+
+#[test]
+fn test_pseudo_inheritance() {
+    // Step 1: Declare a struct that accepts a trait as a type
+    struct Minion<Type: MinionType> {
+        minion_type: Type,
+        task: String,
+    }
+
+    // Step 2: Declare your trait
+    trait MinionType {
+        fn run_actual(&self) -> String;
+    }
+
+    // Step 3: Declare an implementation of that trait, for the parent struct that does the actual
+    // job of running the "actual" method from your trait
+    impl<T: MinionType> Minion<T> {
+        fn run(&self) -> String {
+            println!("Performing task {}", self.task);
+
+            self.minion_type.run_actual()
+        }
+    }
+
+    // Step 4: Declare your "child" structs
+    struct Harvester;
+    struct Builder;
+
+    // Step 5: Implement the underlying method for each of the child structs
+    impl MinionType for Harvester {
+        fn run_actual(&self) -> String {
+            String::from("Running harvester")
+        }
+    }
+
+    impl MinionType for Builder {
+        fn run_actual(&self) -> String {
+            String::from("Running builder")
+        }
+    }
+
+    // If the above worked ... You're golden!
     let harvester = Minion {
         minion_type: Harvester,
         task: "Does harvesting".to_string()
@@ -43,8 +55,8 @@ fn main() {
         task: "Does building".to_string()
     };
 
-    harvester.run();
-    builder.run();
+    assert_eq!(harvester.run(), "Running harvester".to_string());
+    assert_eq!(builder.run(), "Running builder".to_string());
 }
 
 thread_local! {
