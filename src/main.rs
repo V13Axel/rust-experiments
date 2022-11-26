@@ -2,6 +2,35 @@ use std::cell::RefCell;
 
 
 fn main() {
+    // test_enum_impl();
+}
+
+#[test]
+fn test_enum_impl() {
+    #[derive(Debug)]
+    enum Task {
+        Harvest(u32),
+        Upgrade(u32),
+        Build(u32)
+    }
+
+    impl Task {
+        fn run(&self) -> String {
+            format!("{:?}", self)
+        }
+    }
+
+    let harvest_one = Task::Harvest(1);
+    let harvest_two = Task::Harvest(35);
+    let upgrade_one = Task::Upgrade(4);
+    let upgrade_two = Task::Upgrade(50);
+    let build_one = Task::Build(120);
+
+    assert_eq!(harvest_one.run(), "Harvest(1)");
+    assert_eq!(harvest_two.run(), "Harvest(35)");
+    assert_eq!(upgrade_one.run(), "Upgrade(4)");
+    assert_eq!(upgrade_two.run(), "Upgrade(50)");
+    assert_eq!(build_one.run(), "Build(120)");
 }
 
 #[test]
