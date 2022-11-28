@@ -1,13 +1,42 @@
-use std::cell::RefCell;
+use std::{cell::RefCell, io::{self, stdin}};
 
 
 fn main() {
+    let total: i16 = 5;
+    let mut user_input = String::new();
+
+    stdin().read_line(&mut user_input).unwrap();
+
+    let new_number: i16 = user_input.trim().parse().unwrap();
+
+    println!("{}", total - new_number);
     // test_enum_impl();
+}
+
+#[test]
+fn test_range_looping() {
+    let loop_limit_1 = 5;
+    let loop_limit_2 = 0;
+
+    let mut loop_results_1 = vec![];
+    let mut loop_results_2 = vec![];
+
+    for looped in 1..loop_limit_1 {
+        loop_results_1.push(looped);
+    }
+
+    for looped in 1..loop_limit_2 {
+        loop_results_2.push(looped);
+    }
+
+    assert_eq!(loop_results_1, vec![1, 2, 3, 4]);
+    assert_eq!(loop_results_2, vec![]);
 }
 
 #[test]
 fn test_enum_comparison() {
     #[derive(PartialEq)]
+    #[allow(dead_code)]
     enum Task {
         Harvest,
         Upgrade,
