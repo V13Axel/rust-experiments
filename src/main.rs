@@ -6,6 +6,21 @@ fn main() {
 }
 
 #[test]
+fn test_enum_comparison() {
+    #[derive(PartialEq)]
+    enum Task {
+        Harvest,
+        Upgrade,
+        Build
+    }
+
+    let option1 = Task::Harvest;
+    let option2 = Task::Upgrade;
+
+    assert!(option1 == Task::Harvest)
+}
+
+#[test]
 fn test_enum_impl() {
     #[derive(Debug)]
     enum Task {
