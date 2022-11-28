@@ -17,7 +17,8 @@ fn test_enum_comparison() {
     let option1 = Task::Harvest;
     let option2 = Task::Upgrade;
 
-    assert!(option1 == Task::Harvest)
+    assert!(option1 == Task::Harvest);
+    assert!(option2 == Task::Upgrade);
 }
 
 #[test]
