@@ -1,16 +1,57 @@
-use std::{cell::RefCell, io::{self, stdin}};
+use std::{cell::RefCell, io::{self, stdin}, fmt::Display};
+use cli_table::{TableDisplay, Table};
 
+#[derive(Debug)]
+struct PlacementGrid {
+    spaces: Vec<usize>,
+    width: usize,
+    height: usize,
+}
+
+impl Display for PlacementGrid {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        let mut output: Vec<Vec<usize>> = vec![];
+        for row in 0..(self.height) {
+            output.push(self.spaces[(row * self.width)..((row*self.width) + self.width)].to_vec());
+        }
+        write!(f, "{}", output.table().display().unwrap())
+    }
+}
+
+impl PlacementGrid {
+    pub fn of_size(width: usize, height: usize) -> Self {
+        Self {
+            spaces: vec![0; width * height],
+            width,
+            height
+        }
+    }
+}
+
+impl Default for PlacementGrid {
+    fn default() -> Self {
+        Self {
+            spaces: vec![0; 8 * 8],
+            width: 8,
+            height: 8,
+        }
+    }
+}
 
 fn main() {
-    let total: i16 = 5;
-    let mut user_input = String::new();
+    let mut spaces = PlacementGrid::of_size(8, 8);
+    // let table = spaces.spaces.table().display();
 
-    stdin().read_line(&mut user_input).unwrap();
+    let mut count = 0;
 
-    let new_number: i16 = user_input.trim().parse().unwrap();
+    for i in spaces.spaces.iter_mut() {
+        *i = count;
+        count += 1;
+    }
 
-    println!("{}", total - new_number);
-    // test_enum_impl();
+    dbg!(&spaces.spaces.len());
+
+    println!("{}", spaces);
 }
 
 #[test]
